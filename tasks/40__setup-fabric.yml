@@ -31,7 +31,6 @@
 
 - name: (40) Copy script to remove temporary provisioning user
   become: true
-  become_user: "{{fuse.user}}"
   copy:
     src: manage_jaas.cli
     dest: "{{ download_dir }}"
@@ -41,11 +40,10 @@
 
 - name: (40) Execute script to remove temporary provisioning user
   become: true
-  become_user: "{{fuse.user}}"
   shell: "{{ fuse_home }}/bin/client -u admin -p admin -r 10 -d 2 -f {{ download_dir }}/manage_jaas.cli"
   args:
     chdir: "{{ fuse_home }}"
 
-### todo: some kind of marker to be placed on system
+### todo: some kind of marker to be placed on remote system
 ### if we have pasted this point we should not do it again
 ### or enhance all the steps so that it is really immutable
