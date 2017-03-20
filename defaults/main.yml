@@ -1,0 +1,31 @@
+---
+# defaults file for ansible-role-redhat-jboss-fuse
+
+
+tmp_build_dir: "/Users/hdaems/tmp_build"
+local_rh_bin_dir: ~/redhat_download
+
+
+
+
+# System user configuration
+fuse:
+  user: fuse
+  group: fuse
+  group_id: 2010
+  user_home: "/opt/fuse"
+
+
+jboss_fuse_zip: "jboss-fuse-karaf-6.3.0.redhat-224.zip"
+fuse_home: "{{fuse.user_home}}/jboss-fuse-6.3.0.redhat-224"
+
+# can be standalone or fabric
+# todo: only fabric supported at this moment
+install_method: "fabric"
+karaf_name: "fableft"
+
+
+fab_user: beheer
+### todo: has to go into vault or be generated
+fab_pwd: ZeerGeheim#01
+fab_zoo_pwd: VeryLongPassword#001

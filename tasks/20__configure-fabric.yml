@@ -1,0 +1,48 @@
+---
+
+- name: "{{install_method}} (20) Configure karaf name ({{ karaf_name }})"
+  become: true
+  lineinfile:
+    dest: "{{ fuse_home }}/etc/system.properties"
+    line: "karaf.name = {{ karaf_name }}"
+    regexp: '^karaf.name'
+    owner: "{{ fuse.user }}"
+    group: "{{ fuse.group }}"
+
+- name: (20) Changing profile to 'fabric'
+  become: true
+  lineinfile:
+    dest: "{{ fuse_home }}/etc/system.properties"
+    regexp: "^profiles=jboss-fuse-full"
+    line: "profiles=fabric"
+    owner: "{{ fuse.user }}"
+    group: "{{ fuse.group }}"
+
+
+- name: (20) Adding temporary provisioning user
+  become: true
+  lineinfile:
+    dest: "{{ fuse_home }}/etc/users.properties"
+    regexp: "^#admin="
+    line: "admin=admin,admin"
+    owner: "{{ fuse.user }}"
+    group: "{{ fuse.group }}"
+
+
+
+
+#- name: (20) Customize first boot by disable mq-fabric
+#  become: true
+#  lineinfile:
+#    dest: "{{ fuse_home }}/etc/org.apache.karaf.features.cfg"
+#    regexp: "mq-fabric"
+#    state: absent
+#    owner: "{{ fuse.user }}"
+#    group: "{{ fuse.group }}"
+#
+#- name: (20) Customize first boot by remove broker cfg file
+#  become: true
+#  file:
+#    path: "{{ fuse_home }}/etc/io.fabric8.mq.fabric.server-broker.cfg"
+#    state: absent
+#

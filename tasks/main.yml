@@ -1,0 +1,12 @@
+---
+# tasks file for ansible-role-redhat-jboss-fuse
+
+- include: 00__prepare.yml
+
+- include: 10__copy_and_unpack.yml
+
+- include: "20__configure-{{install_method}}.yml"
+
+- include: 30__register_service.yml
+
+- include: "40__setup-{{install_method}}.yml"

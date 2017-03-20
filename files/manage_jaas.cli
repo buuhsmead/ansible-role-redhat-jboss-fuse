@@ -1,0 +1,3 @@
+jaas:manage --index 1
+jaas:userdel admin
+jaas:update

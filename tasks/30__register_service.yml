@@ -1,0 +1,30 @@
+---
+
+- name: (30) Create service registration
+  become: true
+  shell: "LC_ALL=C {{ fuse_home }}/bin/contrib/karaf-service.sh -k {{ fuse_home }} -n {{ karaf_name }} -u {{ fuse.user }} -g {{ fuse.group }}"
+  args:
+    chdir: "{{ fuse_home }}/bin/contrib"
+#  register: bla
+
+#- debug: msg="{{ bla }}"
+
+- name: (30) Copy created service registration files
+  become: true
+  copy:
+    remote_src: true
+    src: "{{ fuse_home}}/bin/contrib/{{ item }}.service"
+    dest: /etc/systemd/system
+  with_items:
+      - "{{ karaf_name }}"
+      - "{{ karaf_name }}@"
+
+
+- name: "(30) Enable as systemd service ({{ karaf_name}}.service)"
+  become: true
+  systemd:
+      name: "{{ karaf_name }}.service"
+      enabled: True
+      state: started
+      daemon_reload: yes
+

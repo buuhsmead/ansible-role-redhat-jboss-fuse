@@ -1,0 +1,27 @@
+---
+
+- name: (00) Check "download_dir" variable
+  fail: msg="This role requires 'download_dir' to be set and non empty."
+  when: download_dir is not defined or download_dir == ''
+
+- name: " (00) Create groups for FUSE"
+  become: true
+  group:
+    name: "{{ item.group }}"
+    system: yes
+    state: present
+    gid: "{{ item.group_id }}"
+  with_items:
+    - "{{ fuse }}"
+
+- name: " (00) Create users for FUSE"
+  become: true
+  user:
+    name: "{{ item.user }}"
+    comment: "{{ item.user }} user"
+    uid: "{{ item.group_id }}"
+    group: "{{ item.group }}"
+    home: "{{ item.user_home }}"
+    shell: "/bin/sh"
+  with_items:
+    - "{{ fuse }}"

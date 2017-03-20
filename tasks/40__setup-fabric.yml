@@ -1,0 +1,51 @@
+---
+
+- name: (40) Waiting for client connection port becomes available
+  wait_for:
+    port: 8101
+    delay: 40
+    timeout: 400
+
+
+- name: (40) Create the first Fabric of the Ensemble
+  become: true
+  become_user: "{{fuse.user}}"
+  shell: "{{ fuse_home }}/bin/client -u admin -p admin -r 10 -d 2 'fabric:create --clean --new-user {{fab_user}} --new-user-password {{fab_pwd}} --new-user-role admin --zookeeper-password {{fab_zoo_pwd}}  --wait-for-provisioning'"
+  args:
+    chdir: "{{ fuse_home }}"
+
+
+- name: "(40) Restart the instance to switch over to Fabric mode"
+  become: true
+  systemd:
+      name: "{{ karaf_name }}.service"
+      state: restarted
+
+
+- name: (40) Waiting for client connection port becomes available
+  wait_for:
+    port: 8101
+    delay: 10
+    timeout: 300
+
+
+- name: (40) Copy script to remove temporary provisioning user
+  become: true
+  become_user: "{{fuse.user}}"
+  copy:
+    src: manage_jaas.cli
+    dest: "{{ download_dir }}"
+    owner: "{{ fuse.user }}"
+    group: "{{ fuse.group }}"
+
+
+- name: (40) Execute script to remove temporary provisioning user
+  become: true
+  become_user: "{{fuse.user}}"
+  shell: "{{ fuse_home }}/bin/client -u admin -p admin -r 10 -d 2 -f {{ download_dir }}/manage_jaas.cli"
+  args:
+    chdir: "{{ fuse_home }}"
+
+### todo: some kind of marker to be placed on system
+### if we have pasted this point we should not do it again
+### or enhance all the steps so that it is really immutable
