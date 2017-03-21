@@ -4,19 +4,19 @@
   become: true
   lineinfile:
     dest: "{{ fuse_home }}/etc/system.properties"
-    line: "karaf.name = {{ karaf_name }}"
+    line: "karaf.name = {{ karaf_name }}"  ### could be a bug but during container-create-child creation it looks for karaf-xxxx
     regexp: '^karaf.name'
     owner: "{{ fuse.user }}"
     group: "{{ fuse.group }}"
 
-- name: (20) Changing profile to 'fabric'
-  become: true
-  lineinfile:
-    dest: "{{ fuse_home }}/etc/system.properties"
-    regexp: "^profiles=jboss-fuse-full"
-    line: "profiles=fabric"
-    owner: "{{ fuse.user }}"
-    group: "{{ fuse.group }}"
+#- name: (20) Changing profile to 'fabric'
+#  become: true
+#  lineinfile:
+#    dest: "{{ fuse_home }}/etc/system.properties"
+#    regexp: "^profiles=jboss-fuse-full"
+#    line: "profiles=fabric"
+#    owner: "{{ fuse.user }}"
+#    group: "{{ fuse.group }}"
 
 
 - name: (20) Adding temporary provisioning user

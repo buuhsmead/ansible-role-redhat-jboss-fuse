@@ -29,3 +29,14 @@ fab_user: beheer
 ### todo: has to go into vault or be generated
 fab_pwd: ZeerGeheim#01
 fab_zoo_pwd: VeryLongPassword#001
+
+# Only setup we create at this moment is MasterSlave
+broker_setup: MasterSlave
+# The shared broker data directory
+# Can be on a NFSv4 mounted location
+broker_data_dir: /srv/broker/data
+
+### mq-create --data /srv/broker-nl --assign-container brk-nl-1,brk-nl-2 --group broker-nl broker-nl
+broker_name: broker
+
+

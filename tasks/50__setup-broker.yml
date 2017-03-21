@@ -1,0 +1,16 @@
+---
+
+- name: (50) Create if not exist the shared data directory ({{broker_data_dir}})
+  file:
+    dest: "{{broker_data_dir}}"
+    state: directory
+    mode: 0700
+    owner: "{{fuse.user}}"
+    group: "{{fuse.group}}"
+
+
+- name: (50) setup broker
+  become: true
+  shell: "{{ fuse_home }}/bin/client -u {{fab_user}} -p {{fab_pwd}} -r 150 -d 2 'mq-create --no-ssl --data {{broker_data_dir}} --create-container {{broker_name}} --kind MasterSlave --group {{broker_name}} --profile {{broker_name}} --parent-profile mq-amq {{broker_name}}'"
+  args:
+    chdir: "{{ fuse_home }}"

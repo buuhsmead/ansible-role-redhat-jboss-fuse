@@ -25,3 +25,4 @@
     shell: "/bin/sh"
   with_items:
     - "{{ fuse }}"
+

@@ -10,3 +10,5 @@
 - include: 30__register_service.yml
 
 - include: "40__setup-{{install_method}}.yml"
+
+- include: 50__setup-broker.yml
