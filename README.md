@@ -1,7 +1,8 @@
 Role Name
 =========
 
-A brief description of the role goes here.
+This is an Ansible role to install Red Hat JBoss fuse.
+The main focus for now is installing on a single node a Fabric.
 
 Requirements
 ------------
@@ -23,16 +24,20 @@ Example Playbook
 
 Including an example of how to use your role (for instance, with variables passed in as parameters) is always nice for users too:
 
-    - hosts: servers
-      roles:
-         - { role: username.rolename, x: 42 }
+---
+
+- hosts: fuse-group
+  roles:
+    - ansible-role-redhat-jboss-common
+    - ansible-role-redhat-jboss-fuse
+    
 
 License
 -------
 
-BSD
+[Apache 2.0](./LICENSE)
 
 Author Information
 ------------------
 
-An optional section for the role authors to include contact information, or a website (HTML is not allowed).
+* [Huub Daems] (https://github.com/buuhsmead)
