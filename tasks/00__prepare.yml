@@ -4,6 +4,10 @@
   fail: msg="This role requires 'download_dir' to be set and non empty."
   when: download_dir is not defined or download_dir == ''
 
+- name: (00) Check that we have at least 2048mb of RAM in total
+  fail: msg="This role requires that there is at least 2048mb of RAM. Actual ({{ansible_memory_mb.real.total}}mb)"
+  when: ansible_memory_mb.real.total < 2048
+
 - name: " (00) Create groups for FUSE"
   become: true
   group:
@@ -26,3 +30,43 @@
   with_items:
     - "{{ fuse }}"
 
+
+- name: (00) Ensure the soft limit of nofile is 4096 for domain *
+  become: true
+  pam_limits:
+    domain: *
+    limit_type: soft
+    limit_item: nofile
+    value: 4096
+    use_max: yes
+    backup: true
+
+- name: (00) Ensure the hard limit of nofile is 8192 for domain *
+  become: true
+  pam_limits:
+    domain: *
+    limit_type: hard
+    limit_item: nofile
+    value: 8192
+    use_max: yes
+    backup: true
+
+- name: (00) Ensure the soft limit of nproc is 4096 for domain *
+  become: true
+  pam_limits:
+    domain: *
+    limit_type: soft
+    limit_item: nproc
+    value: 4096
+    use_max: yes
+    backup: true
+
+- name: (00) Ensure the hard limit of nproc is 8192 for domain *
+  become: true
+  pam_limits:
+    domain: *
+    limit_type: hard
+    limit_item: nproc
+    value: 8192
+    use_max: yes
+    backup: true
